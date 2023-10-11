@@ -34,7 +34,7 @@ import threading as thr
 #diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 diretorio_atual = os.path.abspath(os.path.dirname(sys.executable))
 
-ee_account='' #CONTA OCULTADA
+ee_account='conta google earth engine'
 credentials = ee.ServiceAccountCredentials(ee_account, diretorio_atual + '/resources/private-key.json')
 ee.Initialize(credentials)
 
@@ -83,11 +83,13 @@ class MyThread(QThread):
 
                 global camera
                 if cam == 'PhaseOne 100MP':
-                    camera = Camera() #PARAMETROS DAS CAMERAS OCULTADOS
+                    camera = Camera(51.7383,0.00534,11608,8708)
                 if cam == 'PhaseOne 80MP':
-                    camera = Camera() #PARAMETROS DAS CAMERAS OCULTADOS
+                    camera = Camera(45,0.00537,10320,7752)
                 if cam=='Hasselblad':
-                    camera = Camera() #PARAMETROS DAS CAMERAS OCULTADOS
+                    camera = Camera(50,0.00460,11600,8700)
+                if cam=='IXU-RS1000':
+                     camera = Camera(51.4325,0.0046,11608,8708)
 
                 return camera
 
@@ -381,6 +383,7 @@ class MyThread(QThread):
                                 ['Sobreposicao Longitudinal (%)', int(res.plano.long)],
                                 ['Sobreposicao Lateral (%)',int(res.plano.lat)],
                                 ['Intervalo de Tomada (s)', "{:.3f}".format(res.intervalo()).replace('.', ',')],
+                                ['Fuso',str(fuso)],
                                 [''],
                                 ['Frequencia Laser (kHz)', int(plano.freq)],
                                 ['Potencia Laser (%)', int(plano.pot)],
@@ -504,6 +507,7 @@ class Ui_Dialog(object):
         self.camm.addItem("")
         self.camm.addItem("")
         self.camm.addItem("")
+        self.camm.addItem("")
         self.label_2 = QtWidgets.QLabel(parent=Dialog)
         self.label_2.setGeometry(QtCore.QRect(310, 60, 51, 16))
         self.label_2.setObjectName("label_2")
@@ -607,9 +611,10 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Projeto"))
         self.dxf.setText(_translate("Dialog", "Selecione o DXF"))
         self.loc.setText(_translate("Dialog", "Salvar..."))
-        self.camm.setItemText(0, _translate("Dialog", "PhaseOne 100MP"))
-        self.camm.setItemText(1, _translate("Dialog", "PhaseOne 80MP"))
-        self.camm.setItemText(2, _translate("Dialog", "Hasselblad"))
+        self.camm.setItemText(0, _translate("Dialog", "IXU-RS1000"))
+        self.camm.setItemText(1, _translate("Dialog", "PhaseOne 100MP"))
+        self.camm.setItemText(2, _translate("Dialog", "PhaseOne 80MP"))
+        self.camm.setItemText(3, _translate("Dialog", "Hasselblad"))
         self.label_2.setText(_translate("Dialog", "Câmera"))
         self.fuso.setItemText(0, _translate("Dialog", "18"))
         self.fuso.setItemText(1, _translate("Dialog", "19"))
@@ -708,7 +713,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     app_icon = QtGui.QIcon()
-    app_icon.addFile(diretorio_atual + '/resources/aerologo_transp_pk6_icon.ico', QtCore.QSize(48,48))
+    app_icon.addFile(diretorio_atual + '/resources/aerologo_new.ico', QtCore.QSize(48,48))
     app.setWindowIcon(app_icon)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
